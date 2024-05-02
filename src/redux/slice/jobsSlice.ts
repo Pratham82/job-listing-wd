@@ -14,7 +14,7 @@ const initialState: IJobsInitialStateType = {
 }
 
 export const fetchAllJobs = createAsyncThunk<
-  IJobsResult,
+  { data: IJobsResult },
   void,
   { rejectValue: string }
 >('fetch-jobs', () => {
@@ -42,7 +42,7 @@ export const jobSlice = createSlice({
     })
     builder.addCase(fetchAllJobs.fulfilled, (state, action) => {
       state.loading = false
-      state.jobs = action.payload
+      state.jobs = action.payload.data
       state.error = ''
     })
     builder.addCase(fetchAllJobs.rejected, (state, action) => {
