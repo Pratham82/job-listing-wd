@@ -3,14 +3,13 @@ import JobCard from './JobCard'
 
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
 import isEmpty from 'lodash.isempty'
 
 export default function LayoutGrid(props: IJobListingProps) {
   const { jobs } = props.state
-  const { totalCount, jdList } = jobs
+  console.log('🚀 ~ LayoutGrid ~ jobs:', jobs)
 
-  if (isEmpty(jdList)) {
+  if (isEmpty(jobs)) {
     return null
   }
 
@@ -22,21 +21,10 @@ export default function LayoutGrid(props: IJobListingProps) {
         flexDirection: 'column',
       }}
     >
-      {totalCount && (
-        <Typography
-          sx={{
-            color: 'text.secondary',
-            alignSelf: 'flex-start',
-            mb: 2,
-          }}
-        >
-          Result: {totalCount}
-        </Typography>
-      )}
       <Grid container spacing={2}>
-        {jdList?.map((job, i) => {
+        {jobs?.map(job => {
           return (
-            <Grid item>
+            <Grid item key={job.jdUid}>
               <JobCard state={job} />
             </Grid>
           )

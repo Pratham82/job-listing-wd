@@ -20,4 +20,5 @@ export interface IJobsInitialStateType {
   loading: boolean
   jobs: IJobsResult
   error: string | undefined
+  jdList: IJobCard[] | undefined
 }

@@ -3,6 +3,7 @@ import axios from 'axios'
 import { JOBS_URL } from '../../constants'
 
 import { IJobsInitialStateType, IJobsResult } from '../../types/jobs.types'
+import uniqBy from 'lodash.uniqby'
 
 const initialState: IJobsInitialStateType = {
   loading: false,
@@ -11,22 +12,23 @@ const initialState: IJobsInitialStateType = {
     totalCount: 0,
   },
   error: '',
+  jdList: [],
 }
 
 export const fetchAllJobs = createAsyncThunk<
   { data: IJobsResult },
   void,
   { rejectValue: string }
->('fetch-jobs', () => {
+>('fetch-jobs', offset => {
   return axios.post(
     JOBS_URL,
     {
       limit: 10,
-      offset: 0,
+      offset,
     },
     {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-type': 'application/json',
       },
     }
   )
@@ -44,6 +46,10 @@ export const jobSlice = createSlice({
       state.loading = false
       state.jobs = action.payload.data
       state.error = ''
+      state.jdList = uniqBy(
+        state.jdList?.concat(action?.payload?.data?.jdList),
+        'jdUid'
+      )
     })
     builder.addCase(fetchAllJobs.rejected, (state, action) => {
       state.loading = false

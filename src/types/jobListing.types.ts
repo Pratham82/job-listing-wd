@@ -1,7 +1,7 @@
-import { IJobsResult } from './jobs.types'
+import { IJobCard } from './jobs.types'
 
 export interface IJobListingProps {
   state: {
-    jobs: IJobsResult
+    jobs: IJobCard[]
   }
 }
