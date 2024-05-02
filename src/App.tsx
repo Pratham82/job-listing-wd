@@ -35,15 +35,7 @@ function App() {
       next={() => setCurrentPage(currentPage + 1)}
       scrollableTarget="scrollableDiv"
       hasMore={true}
-      loader={
-        <h4
-          style={{
-            color: 'red',
-          }}
-        >
-          Loading...
-        </h4>
-      }
+      loader={<h4>Loading...</h4>}
     >
       <JobListing
         state={{
