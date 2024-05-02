@@ -1,4 +1,4 @@
-export interface IJdList {
+export interface IJobCard {
   jdUid: string
   jdLink: string
   jobDetailsFromCompany: string
@@ -12,7 +12,7 @@ export interface IJdList {
 }
 
 export interface IJobsResult {
-  jdList?: IJdList[] | null
+  jdList?: IJobCard[] | null
   totalCount: number
 }
 
