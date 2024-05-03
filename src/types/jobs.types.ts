@@ -9,6 +9,7 @@ export interface IJobCard {
   minExp: number
   maxExp: number
   jobRole: string
+  companyName: string
 }
 
 export interface IJobsResult {

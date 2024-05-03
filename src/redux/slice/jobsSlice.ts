@@ -13,8 +13,9 @@ const initialState: IJobsInitialStateType = {
   },
   error: '',
   jdList: [],
-  minExp: 0,
   currentPage: 0,
+  // Filters
+  minExp: 0,
   minJdSalary: 0,
   jobRole: '',
   location: '',
@@ -53,12 +54,17 @@ export const jobSlice = createSlice({
     filterJobRole: (state, action) => {
       state.jobRole = action.payload
     },
-
     filterLocation: (state, action) => {
-      state.jobRole = action.payload
+      state.location = action.payload
     },
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload
+    },
+    clearFilters: state => {
+      state.minExp = initialState.minExp
+      state.minJdSalary = initialState.minJdSalary
+      state.location = initialState.location
+      state.jobRole = initialState.jobRole
     },
   },
   extraReducers: builder => {
@@ -91,6 +97,7 @@ export const {
   filterMinBasePay,
   setCurrentPage,
   filterLocation,
+  clearFilters,
 } = jobSlice.actions
 
 export default jobSlice.reducer
