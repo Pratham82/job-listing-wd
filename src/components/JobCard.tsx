@@ -1,12 +1,12 @@
 import { IJobCardProps } from '../types/./jobCard.types'
 
+import { useState } from 'react'
 import Typography from '@mui/material/Typography'
 import Card from '@mui/material/Card'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Link from '@mui/material/Link'
 import Modal from '@mui/material/Modal'
-import { useState } from 'react'
 
 export default function JobCard(props: IJobCardProps) {
   const {
