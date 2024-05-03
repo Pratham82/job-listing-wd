@@ -23,4 +23,7 @@ export interface IJobsInitialStateType {
   jdList: IJobCard[] | undefined
   minExp: number
   currentPage: number
+  minJdSalary: 0
+  jobRole: string
+  location: string
 }

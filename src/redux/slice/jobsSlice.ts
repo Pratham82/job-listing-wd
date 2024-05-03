@@ -15,6 +15,9 @@ const initialState: IJobsInitialStateType = {
   jdList: [],
   minExp: 0,
   currentPage: 0,
+  minJdSalary: 0,
+  jobRole: '',
+  location: '',
 }
 
 export const fetchAllJobs = createAsyncThunk<
@@ -41,14 +44,19 @@ export const jobSlice = createSlice({
   initialState,
 
   reducers: {
-    // TODO : Create a reducer for filtering jdList
-    // TODO : Create a state for current page
-    // TODO : Min Exp
     filterMinExp: (state, action) => {
       state.minExp = action.payload
     },
-    // TODO : Min base pay
-    // TODO : current page
+    filterMinBasePay: (state, action) => {
+      state.minJdSalary = action.payload
+    },
+    filterJobRole: (state, action) => {
+      state.jobRole = action.payload
+    },
+
+    filterLocation: (state, action) => {
+      state.jobRole = action.payload
+    },
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload
     },
@@ -77,6 +85,12 @@ export const jobSlice = createSlice({
   },
 })
 
-export const { filterMinExp, setCurrentPage } = jobSlice.actions
+export const {
+  filterMinExp,
+  filterJobRole,
+  filterMinBasePay,
+  setCurrentPage,
+  filterLocation,
+} = jobSlice.actions
 
 export default jobSlice.reducer
