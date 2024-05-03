@@ -1,23 +1,28 @@
 import { JobFilter, JobListing } from './components'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import './App.css'
 import { useSelector } from 'react-redux'
 import { RootState } from './redux/store'
-import { fetchAllJobs } from './redux/slice/jobsSlice'
+import {
+  fetchAllJobs,
+  filterMinExp,
+  setCurrentPage,
+} from './redux/slice/jobsSlice'
 import { useAppDispatch } from './redux/hooks'
 import CircularProgress from '@mui/material/CircularProgress'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import { IJobCard } from './types/jobs.types'
 
 function App() {
-  const { jdList = [], loading: isLoading } = useSelector(
-    (state: RootState) => state.jobs
-  )
+  const {
+    jdList = [],
+    loading: isLoading,
+    minExp,
+    currentPage,
+  } = useSelector((state: RootState) => state.jobs)
 
   const dispatch = useAppDispatch()
-
-  const [currentPage, setCurrentPage] = useState(0)
-  const [selectedFilter, setSelectedFilter] = useState<string | number>('')
 
   const handleSelectedFilter = (
     e: React.SyntheticEvent<Element, Event>,
@@ -26,14 +31,26 @@ function App() {
       value: string | number
     } | null
   ) => {
-    setSelectedFilter(value.value)
+    dispatch(filterMinExp(value?.value))
   }
-
-  console.log('🚀 ~ App ~ selectedFilter:', selectedFilter)
 
   useEffect(() => {
     dispatch(fetchAllJobs(currentPage))
   }, [currentPage, dispatch])
+
+  // TODO: Create a filter function
+  const getFilteredJobs = useCallback(
+    (jobList: IJobCard[]) => {
+      if (!minExp) {
+        return jdList
+      }
+      return jobList.filter(job => job.minExp >= minExp)
+    },
+    [jdList, minExp]
+  )
+  const filteredResults = useMemo(() => {
+    return getFilteredJobs(jdList)
+  }, [getFilteredJobs, jdList])
 
   if (isLoading) {
     return <CircularProgress />
@@ -67,7 +84,6 @@ function App() {
 
   return (
     <>
-      {/*  */}
       <JobFilter
         state={minExpFilterData}
         actions={{
@@ -75,15 +91,18 @@ function App() {
         }}
       />
       <InfiniteScroll
-        dataLength={jdList?.length}
-        next={() => setCurrentPage(currentPage + 1)}
+        dataLength={filteredResults.length}
+        next={() => {
+          dispatch(setCurrentPage(currentPage + 1))
+          dispatch(filterMinExp(minExp))
+        }}
         scrollableTarget="scrollableDiv"
         hasMore={true}
         loader={<h4>Loading...</h4>}
       >
         <JobListing
           state={{
-            jobs: jdList,
+            jobs: filteredResults,
           }}
         />
       </InfiniteScroll>
