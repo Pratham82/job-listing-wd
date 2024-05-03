@@ -1,18 +1,28 @@
+import { IJobCard } from './types/jobs.types'
 import { JobFilter, JobListing } from './components'
-
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import './App.css'
-import { useSelector } from 'react-redux'
-import { RootState } from './redux/store'
+import {
+  minExpFilterData,
+  jobRoleFilterData,
+  minBasePayFilterData,
+  locationFilterData,
+} from './data'
 import {
   fetchAllJobs,
   filterMinExp,
+  filterJobRole,
+  filterMinBasePay,
   setCurrentPage,
+  filterLocation,
 } from './redux/slice/jobsSlice'
+import { RootState } from './redux/store'
 import { useAppDispatch } from './redux/hooks'
+
+import { useCallback, useEffect, useMemo } from 'react'
+import './App.css'
+import { useSelector } from 'react-redux'
 import CircularProgress from '@mui/material/CircularProgress'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { IJobCard } from './types/jobs.types'
+import Box from '@mui/material/Box'
 
 function App() {
   const {
@@ -23,16 +33,6 @@ function App() {
   } = useSelector((state: RootState) => state.jobs)
 
   const dispatch = useAppDispatch()
-
-  const handleSelectedFilter = (
-    e: React.SyntheticEvent<Element, Event>,
-    value: {
-      title: string
-      value: string | number
-    } | null
-  ) => {
-    dispatch(filterMinExp(value?.value))
-  }
 
   useEffect(() => {
     dispatch(fetchAllJobs(currentPage))
@@ -56,45 +56,49 @@ function App() {
     return <CircularProgress />
   }
 
-  /**
-   * * Min exp.
-   * * Company name
-   * * Location
-   * * Tech stack
-   * * Role
-   * * Min base pay
-   */
-
-  const minExpFilterData = {
-    label: 'Min Experience',
-    options: [
-      { title: '1', value: 1 },
-      { title: '2', value: 2 },
-      { title: '3', value: 3 },
-      { title: '4', value: 4 },
-      { title: '5', value: 5 },
-      { title: '6', value: 6 },
-      { title: '7', value: 7 },
-      { title: '8', value: 8 },
-      { title: '9', value: 9 },
-      { title: '10', value: 10 },
-    ],
-    width: 200,
-  }
-
   return (
     <>
-      <JobFilter
-        state={minExpFilterData}
-        actions={{
-          handleSelectedFilter,
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 1,
+          mb: 2,
         }}
-      />
+      >
+        <JobFilter
+          state={minExpFilterData}
+          actions={{
+            dispatchFunction: filterMinExp,
+            dispatch,
+          }}
+        />
+        <JobFilter
+          state={minBasePayFilterData}
+          actions={{
+            dispatchFunction: filterMinBasePay,
+            dispatch,
+          }}
+        />
+        <JobFilter
+          state={jobRoleFilterData}
+          actions={{
+            dispatchFunction: filterJobRole,
+            dispatch,
+          }}
+        />
+        <JobFilter
+          state={locationFilterData}
+          actions={{
+            dispatchFunction: filterLocation,
+            dispatch,
+          }}
+        />
+      </Box>
       <InfiniteScroll
         dataLength={filteredResults.length}
         next={() => {
           dispatch(setCurrentPage(currentPage + 1))
-          dispatch(filterMinExp(minExp))
+          // dispatch(filterMinExp(minExp))
         }}
         scrollableTarget="scrollableDiv"
         hasMore={true}
