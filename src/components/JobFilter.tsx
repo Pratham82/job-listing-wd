@@ -11,7 +11,7 @@ export default function JobFilter(props: IJobFilterProps) {
   const { dispatchFunction, dispatch } = props.actions
 
   const customFilterHandler = (
-    e: React.SyntheticEvent<Element, Event>,
+    _: React.SyntheticEvent<Element, Event>,
     value: {
       title: string
       value: string | number

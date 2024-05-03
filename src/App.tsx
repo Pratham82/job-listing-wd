@@ -110,7 +110,6 @@ function App() {
         dataLength={res.length}
         next={() => {
           dispatch(setCurrentPage(currentPage + 1))
-          // dispatch(filterMinExp(minExp))
         }}
         scrollableTarget="scrollableDiv"
         hasMore={true}
