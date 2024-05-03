@@ -1,4 +1,3 @@
-import { IJobCard } from './types/jobs.types'
 import { JobFilter, JobListing } from './components'
 import {
   minExpFilterData,
@@ -13,23 +12,30 @@ import {
   filterMinBasePay,
   setCurrentPage,
   filterLocation,
+  clearFilters,
 } from './redux/slice/jobsSlice'
 import { RootState } from './redux/store'
 import { useAppDispatch } from './redux/hooks'
 
-import { useCallback, useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import './App.css'
 import { useSelector } from 'react-redux'
 import CircularProgress from '@mui/material/CircularProgress'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Box from '@mui/material/Box'
+import { getFilteredJobs } from './utils'
+import { Button } from '@mui/material'
 
 function App() {
   const {
     jdList = [],
     loading: isLoading,
-    minExp,
     currentPage,
+    // Filters
+    minExp = 0,
+    minJdSalary = 0,
+    jobRole = '',
+    location = '',
   } = useSelector((state: RootState) => state.jobs)
 
   const dispatch = useAppDispatch()
@@ -38,31 +44,28 @@ function App() {
     dispatch(fetchAllJobs(currentPage))
   }, [currentPage, dispatch])
 
-  // TODO: Create a filter function
-  const getFilteredJobs = useCallback(
-    (jobList: IJobCard[]) => {
-      if (!minExp) {
-        return jdList
-      }
-      return jobList.filter(job => job.minExp >= minExp)
+  const res = getFilteredJobs({
+    allJobs: jdList,
+    filters: {
+      minExp,
+      minJdSalary,
+      jobRole,
+      location,
     },
-    [jdList, minExp]
-  )
-  const filteredResults = useMemo(() => {
-    return getFilteredJobs(jdList)
-  }, [getFilteredJobs, jdList])
+  })
 
   if (isLoading) {
     return <CircularProgress />
   }
 
   return (
-    <>
+    <Box>
       <Box
         sx={{
           display: 'flex',
           gap: 1,
           mb: 2,
+          alignItems: 'center',
         }}
       >
         <JobFilter
@@ -93,9 +96,18 @@ function App() {
             dispatch,
           }}
         />
+        <Button
+          sx={{
+            height: '90%',
+          }}
+          variant="contained"
+          onClick={() => dispatch(clearFilters())}
+        >
+          Clear
+        </Button>
       </Box>
       <InfiniteScroll
-        dataLength={filteredResults.length}
+        dataLength={res.length}
         next={() => {
           dispatch(setCurrentPage(currentPage + 1))
           // dispatch(filterMinExp(minExp))
@@ -106,11 +118,11 @@ function App() {
       >
         <JobListing
           state={{
-            jobs: filteredResults,
+            jobs: res,
           }}
         />
       </InfiniteScroll>
-    </>
+    </Box>
   )
 }
 
