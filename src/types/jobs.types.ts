@@ -21,4 +21,6 @@ export interface IJobsInitialStateType {
   jobs: IJobsResult
   error: string | undefined
   jdList: IJobCard[] | undefined
+  minExp: number
+  currentPage: number
 }
