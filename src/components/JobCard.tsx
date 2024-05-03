@@ -64,7 +64,7 @@ export default function JobCard(props: IJobCardProps) {
       </Typography>
       <Typography
         sx={{
-          fontSize: 11,
+          fontSize: 13,
           fontWeight: 'bold',
         }}
       >
@@ -155,7 +155,6 @@ export default function JobCard(props: IJobCardProps) {
           ⚡ Easy Apply
         </Button>
       </Box>
-
       <Modal
         open={open}
         onClose={handleClose}
@@ -163,12 +162,29 @@ export default function JobCard(props: IJobCardProps) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <Typography
+            id="modal-modal-title"
+            sx={{
+              textAlign: 'center',
+              fontSize: 18,
+              fontWeight: 'bold',
+            }}
+          >
+            Job Description
+          </Typography>
           <Box>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              About Us:
+            <Typography
+              id="modal-modal-title"
+              sx={{
+                fontSize: 14,
+                fontWeight: 'bold',
+                mt: 1,
+              }}
+            >
+              About Company:
             </Typography>
           </Box>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <Typography id="modal-modal-description" sx={{ mt: 1 }}>
             {jobDetailsFromCompany}
           </Typography>
         </Box>

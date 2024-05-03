@@ -5,9 +5,8 @@ import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import isEmpty from 'lodash.isempty'
 
-export default function LayoutGrid(props: IJobListingProps) {
+export default function JobListing(props: IJobListingProps) {
   const { jobs } = props.state
-  console.log('🚀 ~ LayoutGrid ~ jobs:', jobs)
 
   if (isEmpty(jobs)) {
     return null
