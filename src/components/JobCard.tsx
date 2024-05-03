@@ -10,15 +10,13 @@ import Modal from '@mui/material/Modal'
 
 export default function JobCard(props: IJobCardProps) {
   const {
+    companyName = '',
     jobRole,
     location,
     jobDetailsFromCompany,
     minExp,
-    // maxExp,
     minJdSalary,
     maxJdSalary,
-    // currency code
-    // salaryCurrencyCode,
   } = props.state
 
   const [open, setOpen] = useState(false)
@@ -55,9 +53,20 @@ export default function JobCard(props: IJobCardProps) {
         position: 'relative',
       }}
     >
+      {companyName && (
+        <Typography
+          sx={{
+            fontSize: 16,
+            fontWeight: 'bold',
+          }}
+        >
+          {companyName}
+        </Typography>
+      )}
       <Typography
         sx={{
           fontSize: 16,
+          textTransform: 'capitalize',
         }}
       >
         {jobRole}
