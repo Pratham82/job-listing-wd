@@ -41,6 +41,7 @@ function App() {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
+    // @ts-ignore
     dispatch(fetchAllJobs(currentPage))
   }, [currentPage, dispatch])
 

@@ -76,6 +76,7 @@ export const jobSlice = createSlice({
       state.jobs = action.payload.data
       state.error = ''
       state.jdList = uniqBy(
+        // @ts-ignore
         state.jdList?.concat(action?.payload?.data?.jdList),
         'jdUid'
       )
