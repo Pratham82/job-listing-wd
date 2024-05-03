@@ -1,3 +1,11 @@
+import {
+  ActionCreatorWithPayload,
+  Dispatch,
+  ThunkDispatch,
+  UnknownAction,
+} from '@reduxjs/toolkit'
+import { IJobsInitialStateType } from './jobs.types'
+
 export interface IJobFilterProps {
   state: {
     label: string
@@ -5,13 +13,21 @@ export interface IJobFilterProps {
     width: number
   }
   actions: {
-    handleSelectedFilter: (
-      event: React.SyntheticEvent<Element, Event>,
-      alue: {
-        title: string
-        value: string | number
-      } | null
-    ) => void
+    dispatchFunction: ActionCreatorWithPayload<
+      string | number | undefined,
+      | 'Jobs/filterMinExp'
+      | 'Jobs/filterJobRole'
+      | 'Jobs/filterMinBasePay'
+      | 'Jobs/filterLocation'
+    >
+    dispatch: ThunkDispatch<
+      {
+        jobs: IJobsInitialStateType
+      },
+      undefined,
+      UnknownAction
+    > &
+      Dispatch<UnknownAction>
   }
 }
 
